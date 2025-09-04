@@ -1,18 +1,21 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+import os
+from dotenv import load_dotenv
 import model
 from PIL import Image
 import numpy as np
 
-app = Flask("ThyroNetV6")
-CORS(app, origins=[
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
-    "https://thyronetv6.vercel.app",
-    ])
+app = Flask(__name__)
 
-@app.route("/", methods = ["POST"])
+load_dotenv()
+CORS(app, origins=os.getenv("CORS_URLS"))
+
+@app.route("/", methods = ["POST", "GET"])
 def handleData():
+    if request.method == "GET":
+          return "<h3>ServerStatus : LIVE<h3>"
+
     # name = request.form.get('name')
     age = request.form.get('age')
     sex = request.form.get('gender')
